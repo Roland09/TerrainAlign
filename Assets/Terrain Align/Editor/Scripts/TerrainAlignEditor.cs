@@ -330,7 +330,7 @@ namespace Rowlan.TerrainAlign
                     Material mat = GetBlendMaterial();
                     mat.SetTexture("_BlendTex", m_rtCollection[RenderTextureIDs.meshHeight]);
                     mat.SetInt("_BlendMode", (int)editorTarget.blendMode);
-                    mat.SetFloat("_Blend", editorTarget.blend);
+                    mat.SetFloat("_Blend", editorTarget.valueBlend);
 
                     Graphics.Blit(m_rtCollection[RenderTextureIDs.heightMapBackup], m_rtCollection[RenderTextureIDs.combinedHeightMap], mat);
 
@@ -456,6 +456,8 @@ namespace Rowlan.TerrainAlign
 
         public override void OnInspectorGUI()
         {
+
+            EditorGUILayout.HelpBox("This is experimental, please backup your terrain", MessageType.Info);
 
             EditorGUI.BeginChangeCheck();
 

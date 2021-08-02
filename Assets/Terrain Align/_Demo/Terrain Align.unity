@@ -148,7 +148,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 75c08ee5952e8ae4a85e0183177f21ea, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 471
+      value: 266.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 75c08ee5952e8ae4a85e0183177f21ea, type: 3}
       propertyPath: m_LocalPosition.y
@@ -156,7 +156,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 75c08ee5952e8ae4a85e0183177f21ea, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 246
+      value: 189.7
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 75c08ee5952e8ae4a85e0183177f21ea, type: 3}
       propertyPath: m_LocalRotation.w
@@ -216,7 +216,7 @@ MonoBehaviour:
   featureEnabled: 1
   terrain: {fileID: 189971806}
   blendMode: 0
-  blend: 0.5
+  valueBlend: 0.5
   blur: 0
   blurSettings:
     blurSize: 0.036
@@ -400,7 +400,7 @@ MonoBehaviour:
   featureEnabled: 1
   terrain: {fileID: 189971806}
   blendMode: 0
-  blend: 0.5
+  valueBlend: 0.5
   blur: 0
   blurSettings:
     blurSize: 0
@@ -743,7 +743,7 @@ MonoBehaviour:
   featureEnabled: 1
   terrain: {fileID: 189971806}
   blendMode: 0
-  blend: 0.5
+  valueBlend: 0.5
   blur: 0
   blurSettings:
     blurSize: 0

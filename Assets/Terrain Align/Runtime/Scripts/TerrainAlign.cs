@@ -41,8 +41,9 @@ namespace Rowlan.TerrainAlign
 
         public BlendMode blendMode = BlendMode.Exclusive;
 
+        [Tooltip("The factor used in blend mode Value")]
         [Range(0f, 1f)]
-        public float blend = 0.5f;
+        public float valueBlend = 0.5f;
 
         public bool blur = false;
 
