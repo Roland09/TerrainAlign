@@ -37,10 +37,10 @@ namespace Rowlan.TerrainAlign
 
         static class RenderTextureIDs
         {
-            public static string heightMap = "heightMap";
-            public static string heightMapBackup = "heightMapBackup";
+            public static string heightMapOriginal = "heightMapOriginal";
             public static string meshHeight = "meshHeight";
             public static string combinedHeightMap = "combinedHeightMap";
+            public static string heightMapCurrent = "heightMapCurrent";
             public static string cameraDepthRT = "cameraDepthRT";
         }
 
@@ -119,10 +119,10 @@ namespace Rowlan.TerrainAlign
             if (m_initialized)
                 return;
 
-            renderTextureDescriptions.Add(new RenderTextureDescription(RenderTextureIDs.heightMap, GraphicsFormat.R16_UNorm, true));
-            renderTextureDescriptions.Add(new RenderTextureDescription(RenderTextureIDs.heightMapBackup, GraphicsFormat.R16_UNorm, true));
+            renderTextureDescriptions.Add(new RenderTextureDescription(RenderTextureIDs.heightMapOriginal, GraphicsFormat.R16_UNorm, true));
             renderTextureDescriptions.Add(new RenderTextureDescription(RenderTextureIDs.meshHeight, GraphicsFormat.R16_UNorm, true));
             renderTextureDescriptions.Add(new RenderTextureDescription(RenderTextureIDs.combinedHeightMap, GraphicsFormat.R16_UNorm, true));
+            renderTextureDescriptions.Add(new RenderTextureDescription(RenderTextureIDs.heightMapCurrent, GraphicsFormat.R16_UNorm, true));
             renderTextureDescriptions.Add(new RenderTextureDescription(RenderTextureIDs.cameraDepthRT, GraphicsFormat.DepthAuto, false));
 
             // create RT handles
@@ -256,7 +256,7 @@ namespace Rowlan.TerrainAlign
                 }
 
                 // heightmap backup debug view
-                Graphics.Blit(heightMapBackupRt, m_rtCollection[RenderTextureIDs.heightMapBackup], new Vector2(1f, 1f), new Vector2(0f, 0f));
+                Graphics.Blit(heightMapBackupRt, m_rtCollection[RenderTextureIDs.heightMapOriginal], new Vector2(1f, 1f), new Vector2(0f, 0f));
             }
             #endregion Heightmap Backup
 
@@ -332,7 +332,7 @@ namespace Rowlan.TerrainAlign
                     mat.SetInt("_BlendMode", (int)editorTarget.blendMode);
                     mat.SetFloat("_Blend", editorTarget.valueBlend);
 
-                    Graphics.Blit(m_rtCollection[RenderTextureIDs.heightMapBackup], m_rtCollection[RenderTextureIDs.combinedHeightMap], mat);
+                    Graphics.Blit(m_rtCollection[RenderTextureIDs.heightMapOriginal], m_rtCollection[RenderTextureIDs.combinedHeightMap], mat);
 
                     if (editorTarget.featureEnabled)
                     {
@@ -354,7 +354,7 @@ namespace Rowlan.TerrainAlign
             {
                 if (editorTarget.debug)
                 {
-                    Graphics.Blit(editorTarget.terrain.terrainData.heightmapTexture, m_rtCollection[RenderTextureIDs.heightMap]);
+                    Graphics.Blit(editorTarget.terrain.terrainData.heightmapTexture, m_rtCollection[RenderTextureIDs.heightMapCurrent]);
                 }
             }
             #endregion Debug View
