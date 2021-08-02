@@ -188,7 +188,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 75c08ee5952e8ae4a85e0183177f21ea, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 75c08ee5952e8ae4a85e0183177f21ea, type: 3}
       propertyPath: m_Name
@@ -220,6 +220,7 @@ MonoBehaviour:
   settings:
     featureEnabled: 1
     terrain: {fileID: 189971806}
+    terrainOffsetY: 0
     blendMode: 0
     valueBlend: 0.5
     blur: 0
@@ -413,6 +414,7 @@ MonoBehaviour:
   settings:
     featureEnabled: 1
     terrain: {fileID: 0}
+    terrainOffsetY: 0
     blendMode: 0
     valueBlend: 0.5
     blur: 0
@@ -761,6 +763,7 @@ MonoBehaviour:
   settings:
     featureEnabled: 1
     terrain: {fileID: 189971806}
+    terrainOffsetY: 0
     blendMode: 0
     valueBlend: 0.5
     blur: 0
