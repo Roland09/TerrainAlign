@@ -139,7 +139,7 @@ namespace com.rowlan.terrainalign
             // position camera
             Vector3 position = new Vector3(
                 Terrain.activeTerrain.transform.position.x + orthoSize,
-                Terrain.activeTerrain.transform.position.y + terrainHeight,
+                Terrain.activeTerrain.transform.position.y + terrainHeight + settings.terrainOffsetY,
                 Terrain.activeTerrain.transform.position.z + orthoSize
                 );
 

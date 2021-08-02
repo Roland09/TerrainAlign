@@ -1,12 +1,14 @@
 ﻿using com.rowlan.terrainalign;
+using System;
 using UnityEngine;
 
 namespace Rowlan.TerrainAlign
 {
+    [Serializable]
     public class TerrainAlign : MonoBehaviour
     {
-
-        public TerrainAlignSettings settings;
+        [SerializeField]
+        public TerrainAlignSettings settings = new TerrainAlignSettings();
 
     }
 }

@@ -42,6 +42,12 @@ namespace com.rowlan.terrainalign
         /// </summary>
         public Terrain terrain;
 
+        /// <summary>
+        /// Optional y offset on the projection. If you project eg a road, you want the road above of the terrain.
+        /// This increases the y size of the camera projection
+        /// </summary>
+        public float terrainOffsetY = 0f;
+
         public BlendMode blendMode = BlendMode.Exclusive;
 
         [Tooltip("The factor used in blend mode Value")]
