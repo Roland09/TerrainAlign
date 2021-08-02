@@ -6,3 +6,13 @@
   
  
  **Important: This is only experimental so far, install into a new project or backup your terrain!**
+
+ Example Usage:
+
+ Random Mesh
+
+ [![Teapot Example](https://img.youtube.com/vi/3evRuAh8cGk/0.jpg)](https://www.youtube.com/watch?v=3evRuAh8cGk)
+
+ Road Mesh
+
+ [![Teapot Example](https://img.youtube.com/vi/B36Rt8oD7mA/0.jpg)](https://www.youtube.com/watch?v=B36Rt8oD7mA)
