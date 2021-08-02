@@ -17,6 +17,17 @@ namespace Rowlan.TerrainAlign
         {
             return new Material(Shader.Find("Hidden/Rowlan/TerrainAlign/HeightBlit"));
         }
+
+        // Post about the [0 to 0.5] terrain limit:
+        // This is correct. The heightmap implementation itself is signed but is treated as unsigned when rendering so we only have half the
+        // precision available to use for height values.That's why all of our Terrain painting shaders clamp
+        // the returned value between 0f and .5f so that we don't end up writing signed values into the heightmap.
+        // If you were to put in values greater than .5, you'll see the Terrain surface "wrap" to negative height values.
+        // I can't say why this was done but it probably has stayed this way because it would take a lot of code changes to make either of them signed or unsigned to match.
+        // The values are normalized so that we can get the most precision we can out of the .5f for a given Terrain's max height.
+        // 0 being a world height offset of 0 and .5f being terrain.terrainData.size.y (the max height) 
+        // https://forum.unity.com/threads/terraindata-heightmaptexture-float-value-range.672421/#post-4516975
+
         public static float kNormalizedHeightScale => 32766.0f / 65535.0f;
 
         public static void CopyTextureToTerrainHeight(TerrainData terrainData, RenderTexture heightmap, Vector2Int indexOffset, int resolution, int numTiles, float baseLevel, float remap)
