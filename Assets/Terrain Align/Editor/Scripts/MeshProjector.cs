@@ -104,6 +104,7 @@ namespace com.rowlan.terrainalign
 
         public void OnDisable()
         {
+            ReleaseHeightMap();
             m_rtCollection.ReleaseRTHandles();
             debugView.OnDisable();
         }
@@ -435,9 +436,17 @@ namespace com.rowlan.terrainalign
 
         }
 
+        private void ReleaseHeightMap()
+        {
+            Debug.Log("Release Heightmap");
+
+            Object.DestroyImmediate(heightMapBackupRt);
+            heightMapBackupRt = null;
+        }
+
         public void ResetHeightMap()
         {
-            heightMapBackupRt = null;
+            ReleaseHeightMap();
             UpdateRenderTextures();
         }
 
