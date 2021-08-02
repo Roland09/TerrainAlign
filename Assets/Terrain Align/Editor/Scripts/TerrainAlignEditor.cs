@@ -13,7 +13,9 @@ namespace Rowlan.TerrainAlign
         private SceneView sceneView = null;
 
         public MeshProjector meshProjector;
-        
+
+        private bool sceneInitialized = false;
+
         public void OnEnable()
         {
             this.editor = this;
@@ -54,12 +56,13 @@ namespace Rowlan.TerrainAlign
             // check if transform has changed and perform action
             if (Event.current.type == EventType.Repaint)
             {
-                if (editorTarget.transform.hasChanged)
+                if (!sceneInitialized || editorTarget.transform.hasChanged)
                 {
-
                     editorTarget.transform.hasChanged = false;
 
                     meshProjector.UpdateRenderTextures();
+
+                    sceneInitialized = true;
 
                 }
             }
