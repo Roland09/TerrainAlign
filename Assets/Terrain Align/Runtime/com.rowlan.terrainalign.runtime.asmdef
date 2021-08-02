@@ -1,0 +1,16 @@
+{
+    "name": "com.rowlan.terrainalign.runtime",
+    "rootNamespace": "com.rowlan.terrainalign",
+    "references": [
+        "com.rowlan.terrainalign"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

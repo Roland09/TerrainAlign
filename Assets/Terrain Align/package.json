@@ -1,0 +1,12 @@
+{
+  "name": "com.rowlan.terrainalign",
+  "displayName": "Terrain Align",
+  "version": "0.0.1",
+  "unity": "2021.1",
+  "description": "Example of Terrain Alignment via heightmap change",
+  "keywords": [
+    "Editor Tools"
+  ],
+  "category": "Scripts",
+  "type": "tool"
+}
