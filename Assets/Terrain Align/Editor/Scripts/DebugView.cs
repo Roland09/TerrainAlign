@@ -1,8 +1,8 @@
-using System.Collections;
+using com.rowlan.terrainalign;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using static Rowlan.TerrainAlign.TerrainAlignEditor;
+using static com.rowlan.terrainalign.MeshProjector;
 
 namespace Rowlan.TerrainAlign
 {
@@ -10,15 +10,23 @@ namespace Rowlan.TerrainAlign
     {
         private Dictionary<int, RenderTexture> debugMap = new Dictionary<int, RenderTexture>();
 
-        private TerrainAlignEditor editor;
-        private TerrainAlign editorTarget;
+        private MeshProjector meshProjector;
 
-        public DebugView(TerrainAlignEditor editor) {
-            this.editor = editor;
-            this.editorTarget = (TerrainAlign) editor.target;
+        public DebugView(MeshProjector meshProjector) {
+            this.meshProjector = meshProjector;
         }
 
-        public void ReleaseDebugTextures()
+        public void OnEnable()
+        {
+            SetupDebugTextures();
+        }
+
+        public void OnDisable()
+        {
+            ReleaseDebugTextures();
+        }
+
+        private void ReleaseDebugTextures()
         {
             foreach (KeyValuePair<int, RenderTexture> p in debugMap)
             {
@@ -29,25 +37,25 @@ namespace Rowlan.TerrainAlign
             debugMap.Clear();
         }
 
-        public void SetupDebugTextures()
+        private void SetupDebugTextures()
         {
 
             ReleaseDebugTextures();
 
             // create actually used render textures, those are mapped to the debug textures
-            editor.m_rtCollection.ReleaseRTHandles();
+            meshProjector.m_rtCollection.ReleaseRTHandles();
 
 
-            if (editorTarget.terrain)
+            if (meshProjector.GetCurrentTerrain())
             {
-                TerrainData terrainData = editorTarget.terrain.terrainData;
+                TerrainData terrainData = meshProjector.GetCurrentTerrain().terrainData;
 
                 int size = terrainData.heightmapResolution;
-                editor.m_rtCollection.GatherRTHandles(size, size, 16);
+                meshProjector.m_rtCollection.GatherRTHandles(size, size, 16);
 
-                foreach (RenderTextureDescription rtDesc in editor.renderTextureDescriptions)
+                foreach (RenderTextureDescription rtDesc in meshProjector.renderTextureDescriptions)
                 {
-                    RTHandle rtHandle = editor.m_rtCollection.GetRTHandle(rtDesc.Hash);
+                    RTHandle rtHandle = meshProjector.m_rtCollection.GetRTHandle(rtDesc.Hash);
                     RenderTexture rt = rtHandle.RT;
 
                     RenderTexture debugRT = new RenderTexture(rt.width, rt.height, rt.depth, rt.graphicsFormat);
@@ -56,7 +64,7 @@ namespace Rowlan.TerrainAlign
                     debugMap.Add(rtDesc.Hash, debugRT);
                 }
 
-                editor.m_rtCollection.ReleaseRTHandles();
+                meshProjector.m_rtCollection.ReleaseRTHandles();
             }
         }
 
@@ -65,9 +73,9 @@ namespace Rowlan.TerrainAlign
 
             RenderTexture prevRt = RenderTexture.active;
             {
-                foreach (RenderTextureDescription rtDesc in editor.renderTextureDescriptions)
+                foreach (RenderTextureDescription rtDesc in meshProjector.renderTextureDescriptions)
                 {
-                    RTHandle handle = editor.m_rtCollection.GetRTHandle(rtDesc.Hash);
+                    RTHandle handle = meshProjector.m_rtCollection.GetRTHandle(rtDesc.Hash);
                     RenderTexture.active = handle.RT;
 
                     RenderTexture target = debugMap[rtDesc.Hash];
@@ -98,7 +106,7 @@ namespace Rowlan.TerrainAlign
                     string text = "";
                     bool debug = true;
 
-                    foreach (RenderTextureDescription d in editor.renderTextureDescriptions)
+                    foreach (RenderTextureDescription d in meshProjector.renderTextureDescriptions)
                     {
                         if (p.Key == d.Hash)
                         {
@@ -161,7 +169,7 @@ namespace Rowlan.TerrainAlign
         {
             FileUtils fileUtils = new FileUtils();
 
-            foreach (RenderTextureDescription rtDesc in editor.renderTextureDescriptions)
+            foreach (RenderTextureDescription rtDesc in meshProjector.renderTextureDescriptions)
             {
                 string name = rtDesc.Name;
                 RenderTexture RT = debugMap[rtDesc.Hash];
