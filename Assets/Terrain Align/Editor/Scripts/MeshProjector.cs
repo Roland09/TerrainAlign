@@ -9,6 +9,13 @@ namespace com.rowlan.terrainalign
     public class MeshProjector
     {
         [SerializeField]
+        TerrainAlignSettings settings;
+
+        [SerializeField]
+        GameObject gameObject;
+
+
+        [SerializeField]
         RenderTexture heightMapBackupRt;
 
         public RTHandleCollection m_rtCollection;
@@ -43,8 +50,6 @@ namespace com.rowlan.terrainalign
 
         public List<RenderTextureDescription> renderTextureDescriptions = new List<RenderTextureDescription>();
 
-        private TerrainAlignEditor editor;
-        private TerrainAlign editorTarget;
         private DebugView debugView;
 
         public class Projector
@@ -81,10 +86,10 @@ namespace com.rowlan.terrainalign
             return new Material(Shader.Find("Hidden/Rowlan/TerrainAlign/Blur"));
         }
 
-        public MeshProjector(TerrainAlignEditor editor, TerrainAlign editorTarget)
+        public MeshProjector( TerrainAlignSettings settings, GameObject gameObject)
         {
-            this.editor = editor;
-            this.editorTarget = editorTarget;
+            this.gameObject = gameObject;
+            this.settings = settings;
         }
 
         public void OnEnable()
@@ -128,8 +133,8 @@ namespace com.rowlan.terrainalign
 
         public Projector CreateProjector()
         {
-            float orthoSize = editorTarget.terrain.terrainData.size.x / 2;
-            float terrainHeight = editorTarget.terrain.terrainData.size.y;
+            float orthoSize = settings.terrain.terrainData.size.x / 2;
+            float terrainHeight = settings.terrain.terrainData.size.y;
 
             // position camera
             Vector3 position = new Vector3(
@@ -174,7 +179,7 @@ namespace com.rowlan.terrainalign
         public void UpdateRenderTextures()
         {
 
-            if (!editorTarget.terrain)
+            if (!settings.terrain)
             {
                 Debug.LogError("Terrain required");
                 return;
@@ -182,7 +187,7 @@ namespace com.rowlan.terrainalign
 
             m_rtCollection.ReleaseRTHandles();
 
-            TerrainData terrainData = editorTarget.terrain.terrainData;
+            TerrainData terrainData = settings.terrain.terrainData;
             int size = terrainData.heightmapResolution;
 
             m_rtCollection.GatherRTHandles(size, size, 16);
@@ -207,7 +212,7 @@ namespace com.rowlan.terrainalign
 
             Mesh mesh = null;
 
-            MeshFilter meshFilter = editorTarget.GetComponent<MeshFilter>();
+            MeshFilter meshFilter = gameObject.GetComponent<MeshFilter>();
             if (meshFilter)
             {
                 mesh = meshFilter.sharedMesh;
@@ -215,7 +220,7 @@ namespace com.rowlan.terrainalign
 
             if (!mesh)
             {
-                SkinnedMeshRenderer smr = editorTarget.GetComponent<SkinnedMeshRenderer>();
+                SkinnedMeshRenderer smr = gameObject.GetComponent<SkinnedMeshRenderer>();
                 if (smr)
                 {
                     mesh = smr.sharedMesh;
@@ -275,7 +280,7 @@ namespace com.rowlan.terrainalign
 
                                     GL.PushMatrix();
                                     {
-                                        RenderGameObjectNow(editorTarget.gameObject, (int)0);
+                                        RenderGameObjectNow( gameObject, (int)0);
                                     }
                                     GL.PopMatrix();
                                 }
@@ -300,7 +305,7 @@ namespace com.rowlan.terrainalign
 
             #region Effects
             {
-                if (editorTarget.blur)
+                if (settings.blur)
                 {
                     ApplyBlur(m_rtCollection[RenderTextureIDs.meshHeight], m_rtCollection[RenderTextureIDs.meshHeight]);
                 }
@@ -316,15 +321,15 @@ namespace com.rowlan.terrainalign
 
                     Material mat = GetBlendMaterial();
                     mat.SetTexture("_BlendTex", m_rtCollection[RenderTextureIDs.meshHeight]);
-                    mat.SetInt("_BlendMode", (int)editorTarget.blendMode);
-                    mat.SetFloat("_Blend", editorTarget.valueBlend);
+                    mat.SetInt("_BlendMode", (int)settings.blendMode);
+                    mat.SetFloat("_Blend", settings.valueBlend);
 
                     Graphics.Blit(m_rtCollection[RenderTextureIDs.heightMapOriginal], m_rtCollection[RenderTextureIDs.combinedHeightMap], mat);
 
-                    if (editorTarget.featureEnabled)
+                    if (settings.featureEnabled)
                     {
                         ToolboxHelper.CopyTextureToTerrainHeight(
-                            editorTarget.terrain.terrainData,
+                            settings.terrain.terrainData,
                             m_rtCollection[RenderTextureIDs.combinedHeightMap],
                             new Vector2Int(0, 0),
                             m_rtCollection[RenderTextureIDs.combinedHeightMap].RT.width,
@@ -339,9 +344,9 @@ namespace com.rowlan.terrainalign
 
             #region Debug View
             {
-                if (editorTarget.debug)
+                if (settings.debug)
                 {
-                    Graphics.Blit(editorTarget.terrain.terrainData.heightmapTexture, m_rtCollection[RenderTextureIDs.heightMapCurrent]);
+                    Graphics.Blit(settings.terrain.terrainData.heightmapTexture, m_rtCollection[RenderTextureIDs.heightMapCurrent]);
                 }
             }
             #endregion Debug View
@@ -396,10 +401,10 @@ namespace com.rowlan.terrainalign
         {
 
             Material material = GetBlurMaterial();
-            material.SetFloat("_BlurSize", editorTarget.blurSettings.blurSize);
-            material.SetInt("_Samples", editorTarget.blurSettings.blurSamples);
-            material.SetFloat("_Gauss", editorTarget.blurSettings.gauss ? 1 : 0);
-            material.SetFloat("_StandardDeviation", editorTarget.blurSettings.gaussStandardDeviation);
+            material.SetFloat("_BlurSize", settings.blurSettings.blurSize);
+            material.SetInt("_Samples", settings.blurSettings.blurSamples);
+            material.SetFloat("_Gauss", settings.blurSettings.gauss ? 1 : 0);
+            material.SetFloat("_StandardDeviation", settings.blurSettings.gaussStandardDeviation);
 
 
             var temporaryTexture = RenderTexture.GetTemporary(source.width, source.height);
@@ -414,7 +419,7 @@ namespace com.rowlan.terrainalign
         public void CreateHeightMapBackup()
         {
 
-            RenderTexture rt = editorTarget.terrain.terrainData.heightmapTexture;
+            RenderTexture rt = settings.terrain.terrainData.heightmapTexture;
 
             Vector2Int dim = new Vector2Int(rt.width, rt.height);
 
@@ -424,7 +429,7 @@ namespace com.rowlan.terrainalign
 
             heightMapBackupRt.Create();
 
-            Graphics.Blit(editorTarget.terrain.terrainData.heightmapTexture, heightMapBackupRt);
+            Graphics.Blit(settings.terrain.terrainData.heightmapTexture, heightMapBackupRt);
 
             Debug.Log("Heightmap Backup Created");
 
@@ -438,7 +443,7 @@ namespace com.rowlan.terrainalign
 
         public Terrain GetCurrentTerrain()
         {
-            return editorTarget.terrain;
+            return settings.terrain;
         }
 
         public DebugView GetDebugView()

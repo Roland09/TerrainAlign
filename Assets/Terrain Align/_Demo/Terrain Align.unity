@@ -148,43 +148,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 75c08ee5952e8ae4a85e0183177f21ea, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 373.15363
+      value: 448.68954
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 75c08ee5952e8ae4a85e0183177f21ea, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -32
+      value: -45.71742
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 75c08ee5952e8ae4a85e0183177f21ea, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 408.55383
+      value: 348.8376
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 75c08ee5952e8ae4a85e0183177f21ea, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.9989739
+      value: 0.9954303
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 75c08ee5952e8ae4a85e0183177f21ea, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.030810855
+      value: 0.061483145
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 75c08ee5952e8ae4a85e0183177f21ea, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.019143952
+      value: 0.07056552
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 75c08ee5952e8ae4a85e0183177f21ea, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.027117688
+      value: -0.018946594
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 75c08ee5952e8ae4a85e0183177f21ea, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 363.589
+      value: 367.185
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 75c08ee5952e8ae4a85e0183177f21ea, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -3597.9
+      value: -4311.996
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 75c08ee5952e8ae4a85e0183177f21ea, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: -363.044
+      value: -361.677
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 75c08ee5952e8ae4a85e0183177f21ea, type: 3}
       propertyPath: m_Enabled
@@ -217,17 +217,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51ff050d4f2b49244b99b66b59c7346b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  featureEnabled: 1
-  terrain: {fileID: 189971806}
-  blendMode: 0
-  valueBlend: 0.5
-  blur: 0
-  blurSettings:
-    blurSize: 0.055
-    blurSamples: 34
-    gauss: 0
-    gaussStandardDeviation: 0.02
-  debug: 1
+  settings:
+    featureEnabled: 1
+    terrain: {fileID: 189971806}
+    blendMode: 0
+    valueBlend: 0.5
+    blur: 0
+    blurSettings:
+      blurSize: 0
+      blurSamples: 10
+      gauss: 0
+      gaussStandardDeviation: 0.02
+    debug: 1
 --- !u!4 &127884835 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 75c08ee5952e8ae4a85e0183177f21ea, type: 3}
@@ -409,17 +410,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51ff050d4f2b49244b99b66b59c7346b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  featureEnabled: 1
-  terrain: {fileID: 189971806}
-  blendMode: 0
-  valueBlend: 0.5
-  blur: 0
-  blurSettings:
-    blurSize: 0
-    blurSamples: 10
-    gauss: 0
-    gaussStandardDeviation: 0.02
-  debug: 1
+  settings:
+    featureEnabled: 1
+    terrain: {fileID: 0}
+    blendMode: 0
+    valueBlend: 0.5
+    blur: 0
+    blurSettings:
+      blurSize: 0
+      blurSamples: 10
+      gauss: 0
+      gaussStandardDeviation: 0.02
+    debug: 1
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -756,17 +758,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51ff050d4f2b49244b99b66b59c7346b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  featureEnabled: 1
-  terrain: {fileID: 189971806}
-  blendMode: 0
-  valueBlend: 0.5
-  blur: 0
-  blurSettings:
-    blurSize: 0
-    blurSamples: 10
-    gauss: 0
-    gaussStandardDeviation: 0.02
-  debug: 1
+  settings:
+    featureEnabled: 1
+    terrain: {fileID: 189971806}
+    blendMode: 0
+    valueBlend: 0.5
+    blur: 0
+    blurSettings:
+      blurSize: 0
+      blurSamples: 10
+      gauss: 0
+      gaussStandardDeviation: 0.02
+    debug: 1
 --- !u!1 &2089237509
 GameObject:
   m_ObjectHideFlags: 0

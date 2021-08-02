@@ -23,12 +23,12 @@ namespace Rowlan.TerrainAlign
             sceneView = EditorWindow.GetWindow<SceneView>( "Scene View Window", false);
 
             // try getting a terrain in case there is none
-            if (!editorTarget.terrain)
+            if (!editorTarget.settings.terrain)
             {
-                editorTarget.terrain = UnityEngine.Object.FindObjectOfType<Terrain>();
+                editorTarget.settings.terrain = UnityEngine.Object.FindObjectOfType<Terrain>();
             }
 
-            meshProjector = new MeshProjector(editor, editorTarget);
+            meshProjector = new MeshProjector( editorTarget.settings, editorTarget.gameObject);
             meshProjector.OnEnable();
 
         }
@@ -71,7 +71,7 @@ namespace Rowlan.TerrainAlign
 
         private void UpdateDebugView()
         {
-            if (!editorTarget.debug)
+            if (!editorTarget.settings.debug)
                 return;
 
             // dont render preview if this isnt a repaint. losing performance if we do
@@ -116,7 +116,7 @@ namespace Rowlan.TerrainAlign
 
                     if (GUILayout.Button("Flatten entire terrain"))
                     {
-                        TerrainUtils.FlattenTerrain(editorTarget.terrain);
+                        TerrainUtils.FlattenTerrain(editorTarget.settings.terrain);
 
                         meshProjector.ResetHeightMap();
 
@@ -130,7 +130,7 @@ namespace Rowlan.TerrainAlign
             }
             EditorGUILayout.EndVertical();
 
-            if (editorTarget.debug)
+            if (editorTarget.settings.debug)
             {
                 EditorGUILayout.BeginVertical();
                 {
