@@ -208,37 +208,8 @@ namespace com.rowlan.terrainalign
 
         }
 
-        private Mesh GetActiveMesh()
-        {
-
-            Mesh mesh = null;
-
-            MeshFilter meshFilter = gameObject.GetComponent<MeshFilter>();
-            if (meshFilter)
-            {
-                mesh = meshFilter.sharedMesh;
-            }
-
-            if (!mesh)
-            {
-                SkinnedMeshRenderer smr = gameObject.GetComponent<SkinnedMeshRenderer>();
-                if (smr)
-                {
-                    mesh = smr.sharedMesh;
-                }
-            }
-
-            return mesh;
-        }
-
         public void RenderMesh()
         {
-            Mesh activeMesh = GetActiveMesh();
-            if (!activeMesh)
-            {
-                Debug.Log("Mesh required");
-                return;
-            }
 
             #region Heightmap Backup
             {
