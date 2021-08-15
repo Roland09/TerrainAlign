@@ -35,12 +35,29 @@ namespace com.rowlan.terrainalign
             Add,
         }
 
+        public enum Direction
+        {
+            TopDown,
+            BottomUp
+        }
+
         public bool featureEnabled = true;
 
         /// <summary>
         /// The terrain to perform the operations on
         /// </summary>
         public Terrain terrain;
+
+        /// <summary>
+        /// The direction the projection camera is facing
+        /// </summary>
+        public Direction direction = Direction.TopDown;
+
+        /// <summary>
+        /// Cut-off for bottom-up projection. Currently manual. You don't want to eg have a roof considered in the bottom-up projection
+        /// </summary>
+        [Range(0, 1)]
+        public float bottomUpCutOff = 0.2f;
 
         /// <summary>
         /// Optional y offset on the projection. If you project eg a road, you want the road above of the terrain.
@@ -57,6 +74,7 @@ namespace com.rowlan.terrainalign
         public bool blur = false;
 
         public BlurSettings blurSettings = new BlurSettings();
+
 
         public bool debug = true;
     }

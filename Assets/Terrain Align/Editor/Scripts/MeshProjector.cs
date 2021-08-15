@@ -1,8 +1,10 @@
 using Rowlan.TerrainAlign;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
+using static com.rowlan.terrainalign.TerrainAlignSettings;
 
 namespace com.rowlan.terrainalign
 {
@@ -86,6 +88,11 @@ namespace com.rowlan.terrainalign
             return new Material(Shader.Find("Hidden/Rowlan/TerrainAlign/Blur"));
         }
 
+        public static Material GetBottomUpToTopDownMaterial()
+        {
+            return new Material(Shader.Find("Hidden/Rowlan/TerrainAlign/BottomUpToTopDown"));
+        }
+
         public MeshProjector( TerrainAlignSettings settings, GameObject gameObject)
         {
             this.gameObject = gameObject;
@@ -137,14 +144,39 @@ namespace com.rowlan.terrainalign
             float orthoSize = settings.terrain.terrainData.size.x / 2;
             float terrainHeight = settings.terrain.terrainData.size.y;
 
-            // position camera
-            Vector3 position = new Vector3(
-                Terrain.activeTerrain.transform.position.x + orthoSize,
-                Terrain.activeTerrain.transform.position.y + terrainHeight + settings.terrainOffsetY,
-                Terrain.activeTerrain.transform.position.z + orthoSize
-                );
+            Vector3 position;
+            Quaternion rotation;
 
-            Quaternion rotation = Quaternion.Euler(90, 0, 0);
+            switch (settings.direction)
+            {
+                case Direction.TopDown:
+
+                    position = new Vector3(
+                        Terrain.activeTerrain.transform.position.x + orthoSize,
+                        Terrain.activeTerrain.transform.position.y + terrainHeight + settings.terrainOffsetY,
+                        Terrain.activeTerrain.transform.position.z + orthoSize
+                        );
+
+                    rotation = Quaternion.Euler(90, 0, 0);
+
+                    break;
+
+                case Direction.BottomUp:
+
+                    position = new Vector3(
+                        Terrain.activeTerrain.transform.position.x + orthoSize,
+                        Terrain.activeTerrain.transform.position.y /* + terrainHeight */ + settings.terrainOffsetY,
+                        Terrain.activeTerrain.transform.position.z + orthoSize
+                        );
+
+                    rotation = Quaternion.Euler(-90, 0, 0);
+
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException( "Unsupported direction: " + settings.direction); 
+            }
+
 
             // gameobject
             GameObject gameObject = new GameObject("Projector [Temp]");
@@ -173,8 +205,8 @@ namespace com.rowlan.terrainalign
 
         private void ReleaseProjector(Projector projector)
         {
-            Object.DestroyImmediate(projector.camera);
-            Object.DestroyImmediate(projector.gameObject);
+            UnityEngine.Object.DestroyImmediate(projector.camera);
+            UnityEngine.Object.DestroyImmediate(projector.gameObject);
         }
 
         public void UpdateRenderTextures()
@@ -271,9 +303,18 @@ namespace com.rowlan.terrainalign
 
                     Graphics.Blit(m_rtCollection[RenderTextureIDs.cameraDepthRT], m_rtCollection[RenderTextureIDs.meshHeight]);
                 }
+
+                #region Perspective correction
+                if (settings.direction == Direction.BottomUp)
+                {
+                    ConvertBottomUpToTopDown(m_rtCollection[RenderTextureIDs.meshHeight], m_rtCollection[RenderTextureIDs.meshHeight], projector, gameObject);
+                }
+                #endregion Perspective correction
+
                 ReleaseProjector(projector);
             }
             #endregion Mesh Projection
+
 
             #region Effects
             {
@@ -363,6 +404,34 @@ namespace com.rowlan.terrainalign
             }
         }
 
+        /// <summary>
+        /// Convert the rendertexture of the bottom-up projection to one that's aligned to top-down projection
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="destination"></param>
+        /// <param name="projector"></param>
+        /// <param name="gameObject"></param>
+        private void ConvertBottomUpToTopDown(RenderTexture source, RenderTexture destination, Projector projector, GameObject gameObject)
+        {
+            Material material = GetBottomUpToTopDownMaterial();
+
+            var temporaryTexture = RenderTexture.GetTemporary(source.width, source.height);
+
+            // TODO: lowest y-position of all children of container
+            float gameObjectPositionY = gameObject.transform.position.y;
+            float cameraFarClipPlane = projector.camera.farClipPlane;
+
+            material.SetFloat("_GameObjectPositionY", gameObjectPositionY);
+            material.SetFloat("_CameraFarClipPlane", cameraFarClipPlane);
+            material.SetFloat("_CutOff", settings.bottomUpCutOff);
+
+            Graphics.Blit(source, temporaryTexture, material);
+            Graphics.Blit(temporaryTexture, destination);
+
+            RenderTexture.ReleaseTemporary(temporaryTexture);
+
+        }
+
         #region Effects
 
         // https://www.ronja-tutorials.com/post/023-postprocessing-blur/
@@ -411,7 +480,7 @@ namespace com.rowlan.terrainalign
         {
             Debug.Log("Release Heightmap");
 
-            Object.DestroyImmediate(heightMapBackupRt);
+            UnityEngine.Object.DestroyImmediate(heightMapBackupRt);
             heightMapBackupRt = null;
         }
 
