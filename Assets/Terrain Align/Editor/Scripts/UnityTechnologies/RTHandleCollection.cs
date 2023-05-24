@@ -1,9 +1,9 @@
 /// This class is based on the Unity Technologies Terrain Tools.
 /// License:
-/// 
-///   Terrain Tools copyright © 2020 Unity Technologies ApS
+///
+///   Terrain Tools copyright ï¿½ 2020 Unity Technologies ApS
 ///   Licensed under the Unity Companion License for Unity-dependent projects--see Unity Companion License.
-///   Unless expressly provided otherwise, the Software under this license is made available strictly on an “AS IS” BASIS WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED. Please review the license for details on these and other terms and conditions.
+///   Unless expressly provided otherwise, the Software under this license is made available strictly on an ï¿½AS ISï¿½ BASIS WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED. Please review the license for details on these and other terms and conditions.
 ///
 /// https://docs.unity3d.com/Packages/com.unity.terrain-tools@3.0/license/LICENSE.html
 ///
@@ -67,7 +67,7 @@ namespace Rowlan.TerrainAlign
                 m_Handles[ m_NameToHash[ name ] ] = value;
             }
         }
-        
+
         /// <summary>
         /// RTHandleCollection constructor
         /// </summary>
@@ -113,7 +113,7 @@ namespace Rowlan.TerrainAlign
         {
             return m_NameToHash.ContainsKey( name );
         }
-        
+
         /// <summary>
         /// Check to see if a RTHandle with the provided hash value exists already
         /// <param name="hash">The hash or integer value used to identify a RTHandle in this RTHandleCollection</param>
@@ -141,6 +141,11 @@ namespace Rowlan.TerrainAlign
             foreach( int key in m_Hashes )
             {
                 var desc = new RenderTextureDescriptor( width, height, m_Formats[ key ], depth );
+                if (m_Formats[key] == GraphicsFormat.None)
+                {
+                    desc.colorFormat = RenderTextureFormat.Depth;
+                    desc.depthBufferBits = 32;
+                }
                 m_Handles[ key ] = RTUtils.GetNewHandle( desc );
                 m_Handles[ key ].RT.Create();
             }
@@ -224,7 +229,7 @@ namespace Rowlan.TerrainAlign
         public virtual void Dispose(bool dispose)
         {
             if(m_Disposed) return;
-            
+
             if(!dispose) return;
 
             ReleaseRTHandles();
