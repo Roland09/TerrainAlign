@@ -127,7 +127,7 @@ namespace com.rowlan.terrainalign
             renderTextureDescriptions.Add(new RenderTextureDescription(RenderTextureIDs.meshHeight, GraphicsFormat.R16_UNorm, true));
             renderTextureDescriptions.Add(new RenderTextureDescription(RenderTextureIDs.combinedHeightMap, GraphicsFormat.R16_UNorm, true));
             renderTextureDescriptions.Add(new RenderTextureDescription(RenderTextureIDs.heightMapCurrent, GraphicsFormat.R16_UNorm, true));
-            renderTextureDescriptions.Add(new RenderTextureDescription(RenderTextureIDs.cameraDepthRT, GraphicsFormat.DepthAuto, false));
+            renderTextureDescriptions.Add(new RenderTextureDescription(RenderTextureIDs.cameraDepthRT, GraphicsFormat.None, false));
 
             // create RT handles
             m_rtCollection = new RTHandleCollection();
@@ -174,7 +174,7 @@ namespace com.rowlan.terrainalign
                     break;
 
                 default:
-                    throw new ArgumentOutOfRangeException( "Unsupported direction: " + settings.direction); 
+                    throw new ArgumentOutOfRangeException( "Unsupported direction: " + settings.direction);
             }
 
 
